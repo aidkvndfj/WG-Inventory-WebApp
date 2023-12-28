@@ -1,7 +1,8 @@
 <?php
-define('VM_DB_HOST_1', 'cis3760f23-12.socs.uoguelph.ca');
+define('DB_HOST_1', '192.168.2.148
+');
 $host = isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : null;
-if ($host == VM_DB_HOST_1) {
+if ($host == DB_HOST_1) {
     include 'api/constants/index.php';
     include 'api/utils/index.php';
 } else {
@@ -43,10 +44,6 @@ class Router
                 exit;
             }
 
-            if (!authenticateUser()) {
-                throw new Exception(handleError(NO_AUTH_TOKEN_FOUND, 400, 'Please provide an authoriszation token.'));
-            }
-
             $uriWithoutQuery = strtok($uri, '?');
 
             // Iterate through defined routes to find a match
@@ -57,7 +54,7 @@ class Router
                     if (in_array($method, $allowedMethods)) {
                         $controllerName = $routeData['controller'];
 
-                        if ($_SERVER['HTTP_HOST'] == VM_DB_HOST_1) {
+                        if ($_SERVER['HTTP_HOST'] == DB_HOST_1) {
                             include_once "api/controllers/$controllerName.php";
                         } else {
                             include_once "controllers/$controllerName.php";
